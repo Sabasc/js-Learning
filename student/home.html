@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .signup-form, .home-page {
+      width: 300px;
+      margin: 50px auto;
+      padding:20px;
+    }
+
+    .signup-form h2, .home-page h2 {
+      text-align: center;
+    }
+
+    .signup-form input, .home-page input, .home-page button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 5px;
+      border:none;
+      background-color:lightgoldenrodyellow;
+  
+    }
+
+    .signup-form button, .home-page button {
+      background-color: purple;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .home-page table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+    }
+
+    .home-page th, .home-page td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .home-page th {
+      background-color: #f2f2f2;
+    }
+
+    .home-page .record-actions button {
+      margin-right: 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+   .signup-form{
+      background-image:url("cool-background\ \(3\).png");
+      background-size:cover ;
+      height:300px;
+      border-radius:30px;
+    }
+    
+    #submitBtn{
+      width:70px;
+      height:50px;
+      border-radius:5px;
+      box-shadow: cadetblue;
+    }
+
+    body{
+      background-image: url("cool-background\ \(4\).png");
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-form">
+    <h2>Signup</h2>
+    <form id="signupForm">
+    <label for="">Name:</label>  <input type="text" id="name" placeholder="Enter name" required><br>
+    <label for="">Email:</label>   <input type="email" id="email" placeholder="Enter email" required><br><br>
+      <button type="submit" id="submitBtn">Submit</button>
+    </form>
+  </div>
+
+  <div class="home-page" style="display: none;">
+    <h2>Welcome to the Student Portal</h2>
+    <form id="recordForm">
+      <input type="text" id="recordName" placeholder="Name" required>
+      <input type="text" id="recordEmail" placeholder="Email" required>
+      <button type="button" id="addRecordBtn">Add Record</button>
+    </form>
+
+    <table id="recordTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="recordTableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Define an array to store the records
+    let records = [];
+
+    // Function to add a new record to the array and update the table
+    function addRecord() {
+      const name = document.getElementById("recordName").value;
+      const email = document.getElementById("recordEmail").value;
+
+      if (name !== "" && email !== "") {
+        const record = {
+          name: name,
+          email: email
+        };
+
+        records.push(record);
+        updateTable();
+
+        // Clear the form fields
+        document.getElementById("recordName").value = "";
+        document.getElementById("recordEmail").value = "";
+      }
+    }
+
+    // Function to update the table with the records
+    function updateTable() {
+      const tableBody = document.getElementById("recordTableBody");
+      tableBody.innerHTML = "";
+
+      for (let i = 0; i < records.length; i++) {
+        const record = records[i];
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${record.name}</td>
+          <td>${record.email}</td>
+          <td class="record-actions">
+            <button onclick="editRecord(${i})">Edit</button>
+            <button onclick="deleteRecord(${i})">Delete</button>
+          </td>
+        `;
+
+        tableBody.appendChild(row);
+      }
+    }
+
+    // Function to edit a record
+    function editRecord(index) {
+      const record = records[index];
+
+      // Set the values in the form fields
+      document.getElementById("recordName").value = record.name;
+      document.getElementById("recordEmail").value = record.email;
+
+      // Remove the record from the array
+      records.splice(index, 1);
+
+      // Update the table
+      updateTable();
+    }
+
+    // Function to delete a record
+    function deleteRecord(index) {
+      // Remove the record from the array
+      records.splice(index, 1);
+
+      // Update the table
+      updateTable();
+    }
+
+    // Event listener for the form submit (signup)
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      // Show the home page after signup
+      document.querySelector(".signup-form").style.display = "none";
+      document.querySelector(".home-page").style.display = "block";
+    });
+
+    // Event listener for the add record button
+    document.getElementById("addRecordBtn").addEventListener("click", addRecord);
+  </script>
+</body>
+</html>
